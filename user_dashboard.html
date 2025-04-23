@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Utente</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyDsrHAtIh5bsYDHa1wz0LMcmciChAoRikU",
+            authDomain: "myauraid-f03c6.firebaseapp.com",
+            projectId: "myauraid-f03c6",
+            storageBucket: "myauraid-f03c6.firebasestorage.app",
+            messagingSenderId: "190478237725",
+            appId: "1:190478237725:web:0d39907473f511b85a06f4"
+        };
+
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #E30AF5, #F174FF);
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            font-weight: 600;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .saldo {
+            font-weight: bold;
+        }
+
+        .badge {
+            padding: 5px 10px;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        .btn-settings {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f174ff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+
+        .btn-settings:hover {
+            background-color: #e008f6;
+        }
+
+        #profile-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 20px;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+       .widget {
+        text-align: center;
+        margin: 20px;
+    }
+    
+    .widget-header {
+        background-color: #ff4d4d; /* Rosso acceso */
+        color: white;
+        padding: 10px 20px;
+        border-radius: 12px;
+        font-size: 18px;
+        font-weight: bold;
+        cursor: pointer;
+        display: inline-block;
+        transition: background-color 0.3s ease;
+    }
+    
+    .widget-header:hover {
+        background-color: #e04444;
+    }
+
+    .special-offer {
+        color: red; /* Colore rosso per "Offerta Speciale" */
+    }
+
+    .banner {
+        display: none;
+        background-color: #ff4d4d; /* Rosso acceso */
+        color: white;
+        padding: 15px 20px;
+        border-radius: 12px;
+        font-size: 18px;
+        font-weight: bold;
+        text-align: center;
+        max-width: 600px;
+        margin: 20px auto;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transform: translateY(-20px);
+        opacity: 0;
+        transition: transform 0.5s ease, opacity 0.5s ease;
+    }
+
+    .banner.show {
+        display: block;
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    .banner a {
+        color: yellow;
+        text-decoration: underline;
+    }
+
+hr {
+    border: none
+}
+</style>
+
+
+        
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="widget-header" onclick="toggleBanner()">?? Offerta Speciale!</div>
+    <div class="banner">
+        Stiamo regalando a tutti gli utenti iscritti dopo il 26 Marzo <b>15 di Saldo di benvenuto.
+    </div>
+<hr>
+        <img id="profile-img" src="default-profile.png" alt="Immagine del profilo">
+        <h2>Benvenuto nella tua Dashboard!</h2>
+        <p id="user-email"></p>
+        <p id="user-uid"></p>
+        <p>Saldo: <span id="saldo" class="saldo">Caricamento...</span></p>
+        <p id="badge"></p> <!-- Sezione per il badge -->
+        <p id="error-message" class="error"></p>
+        
+        <!-- Bottone Impostazioni -->
+        <button class="btn-settings" onclick="window.location.href='settings.html'">Impostazioni</button>
+        <button class="btn-settings" onclick="window.location.href='howtogetbalance.html'">Saldo</button>
+        <button class="btn-settings" onclick="window.location.href='index.html'">Torna al menù opzioni</button>
+    </div>
+
+    <script>
+        firebase.auth().onAuthStateChanged(function(user) {
+            if (user) {
+                document.getElementById('user-email').textContent = "Email: " + user.email;
+                document.getElementById('user-uid').textContent = "UID: " + user.uid;
+
+                // Recupero saldo da Firestore
+                db.collection("users").doc(user.uid).get()
+                    .then((doc) => {
+                        if (doc.exists) {
+                            const userData = doc.data();
+                            if (userData.saldo !== undefined) {
+                                document.getElementById('saldo').textContent = userData.saldo + "€";
+                            } else {
+                                document.getElementById('saldo').textContent = "0€";
+                            }
+
+                            // Carica immagine profilo
+                            const profileImageURL = userData.profileImage || 'aurastudio.png'; // Se non c'è immagine, usa quella di default
+                            document.getElementById('profile-img').src = profileImageURL;
+
+                            // Carica e mostra il badge basato sul campo 'badge' personalizzato
+const badge = userData.badge && userData.badge.trim() !== "" ? userData.badge : 'Utente';
+document.getElementById('badge').textContent = "Badge: " + badge;
+document.getElementById('badge').classList.add('badge');
+                        } else {
+                            document.getElementById('saldo').textContent = "0€";
+                            console.log("Nessun documento trovato per l'utente, creando uno nuovo...");
+                            
+                            // Creazione automatica del documento utente se non esiste
+                            db.collection("users").doc(user.uid).set({
+                                saldo: 15,
+                                profileImage: 'aurastudio.png', // Immagine profilo di default
+                                badge: '' // Imposta 'admin' su false di default
+                            }).then(() => {
+                                console.log("Documento utente creato con saldo 0.");
+                            }).catch((error) => {
+                                document.getElementById('error-message').textContent = "Errore nel salvataggio dei dati.";
+                                console.error("Errore nella creazione del documento:", error);
+                            });
+                        }
+                    })
+                    .catch((error) => {
+                        console.error("Errore nel recupero dati:", error);
+                        document.getElementById('error-message').textContent = "Errore nel caricamento del saldo.";
+                    });
+            } else {
+                window.location.href = "login.html";
+            }
+        });
+function toggleBanner() {
+        const banner = document.querySelector('.banner');
+        banner.classList.toggle('show');
+    }
+
+    </script>
+
+</body>
+</html>

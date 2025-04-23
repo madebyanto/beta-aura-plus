@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aura Plus - Saldo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #E30AF5, #F174FF);
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 600;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        header p {
+            font-size: 1.2em;
+            font-weight: 300;
+            margin-bottom: 30px;
+            animation: fadeIn 1.2s ease-in-out;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .widget {
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: left;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border: none;
+        }
+
+        .widget:hover {
+            transform: translateY(-5px);
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .widget::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.3);
+            transition: left 0.4s ease;
+        }
+
+        .widget:hover::after {
+            left: 100%;
+        }
+
+        .widget h2 {
+            font-size: 1.5em;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .widget p {
+            font-size: 1em;
+            font-weight: 300;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-top: 30px;
+            margin-bottom: 20px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Saldo Aura+</h1>
+            <p>Esplora le opzioni per guadagnare e spendere il tuo saldo virtuale.</p>
+        </header>
+
+        <div class="buttons">
+            <div class="widget">
+                <h2>Accedi alla VIP Chat</h2>
+                <p>Accedi a una chat esclusiva con i membri VIP di Aura Studio.</p>
+                <h6>Prezzo: 2500 di Saldo</h6>
+            </div>
+
+            <div class="widget">
+                <h2>Canale Logs</h2>
+                <p>Accedi al canale Telegram con i logs dei nostri servizi.</p>
+                <h6>Prezzo: 1200 di Saldo</h6>
+            </div>
+
+            <div class="widget">
+                <h2>Influenza le scelte di Aura Studio</h2>
+                <p>Vota le decisioni future di Aura Studio tramite un canale WhatsApp riservato.</p>
+                <h6>Prezzo: 3400 di Saldo</h6>
+            </div>
+
+            <h1>Guadagna Saldo</h1>
+            <div class="widget">
+                <h2>Saldi Settimanali</h2>
+                <p>Ogni sabato faremo un drop di 10 di saldo per tutti gli utenti.</p>
+            </div>
+
+            <div class="widget">
+                <h2>Saldi Mensili</h2>
+                <p>La prima domenica di ogni mese faremo un drop di 20 di saldo per tutti gli utenti.</p>
+            </div>
+
+            <h1>Acquista Saldo</h1>
+            <div class="widget" onclick="location.href='https://wa.me/13177699431'">
+                <h2>Contatta il Supporto</h2>
+                <p>Contattaci per acquistare saldo tramite pacchetti.</p>
+            </div>
+              <div class="widget" onclick="location.href='packets.html'">
+                <h2>Pacchetti acquistabili</h2>
+                <p>Pacchetti di saldo acquistabili</p>
+</div>
+<div class="widget" onclick="location.href='redeem.html'">
+
+                <h2>Riscatta codici</h2>
+                <p>Riscatta un codice per ottenere saldo.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
