@@ -192,10 +192,15 @@
                         auth.signOut();
                     }
                 })
-                .catch((error) => {
-                    console.error("Errore nel login", error.message);
-                    showMessage("Errore: " + error.message);
-                });
+               .catch((error) => {
+    console.error("Errore nel login", error.message);
+    if (error.code === 'auth/user-disabled') {
+        window.location.href = "disabled_account.html";
+    } else {
+        showMessage("Errore: " + error.message);
+    }
+});
+
         });
 
         document.getElementById('signup-form').addEventListener('submit', function(event) {
