@@ -193,11 +193,11 @@
                     }
                 })
                 .catch((error) => {
-                    console.error("Errore nel login", error.message);
-                    if (error.code === 'auth/user-disabled') {
-                        window.location.href = "account_disabled.html";
-                    } else if (error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found') {
+                    console.error("Errore nel login", error);
+                    if (error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found') {
                         showMessage("Credenziali errate. Riprova.");
+                    } else if (error.code === 'auth/invalid-email') {
+                        showMessage("L'email fornita non è valida.");
                     } else {
                         showMessage("Errore: " + error.message);
                     }
